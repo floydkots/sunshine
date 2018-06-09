@@ -201,6 +201,26 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
         }
     }
 
+    private void openLocationInMap() {
+        String addressString = "1600 Amphitheatre Parkway, CA";
+        Uri.Builder geoBuilder = new Uri.Builder()
+                .scheme("geo")
+                .path("0,0")
+                .query(addressString);
+        Uri geoUri = geoBuilder.build();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoUri);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "Couldn't call " + geoUri.toString()
+                    + ", no receiving apps installed!");
+        }
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         /* Use AppCompatActivity's method getMenuInflater to get a handle on the menu inflater */
@@ -221,7 +241,11 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
             return true;
         }
 
-        // TODO (2) Launch the map when the map menu item is clicked
+        // COMPLETED TODO (2) Launch the map when the map menu item is clicked
+        if (id == R.id.action_open_map) {
+            openLocationInMap();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
